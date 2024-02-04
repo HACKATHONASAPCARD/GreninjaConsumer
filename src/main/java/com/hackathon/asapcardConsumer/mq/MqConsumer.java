@@ -13,35 +13,34 @@ import com.hackathon.repository.TransactionRepository;
 @Component
 public class MqConsumer {
 
-  @Autowired
-  private TransactionRepository transactionRepository;
-  
-  @Autowired
-  private PersonRepository personRepository;
-  
-  @RabbitListener(queues = "transaction.create")
-  private void consumer(List<Transaction> transactions){
-	  transactions.forEach(transaction -> {
-		  var person = personRepository.findById(transaction.getPerson().getId());
-		  if (person.isPresent()) {
-			  transaction.setPerson(person.get());
-		  } else {
-			  personRepository.save(transaction.getPerson());
-		  }
-	  });
-	  
-	  transactionRepository.saveAll(transactions);
-  }
-  
-  @RabbitListener(queues = "transaction.update")
-  private void updateTransactions(List<Transaction> transactions){
-	  transactions.forEach(transaction -> {
-		  var updateStatus = transactionRepository.findById(transaction.getId());
-		  if(updateStatus.isPresent()) {
-			  updateStatus.get().setStatus(transaction.getStatus());
-			  transactionRepository.save(updateStatus.get());
-		  }
-	  });
-  }
-  
+    @Autowired
+    private TransactionRepository transactionRepository;
+
+    @Autowired
+    private PersonRepository personRepository;
+
+    @RabbitListener(queues = "transaction.create")
+    public void consumeCreateTransaction(List<Transaction> transactions) {
+        transactions.forEach(transaction -> {
+            var person = personRepository.findById(transaction.getPerson().getId());
+            if (person.isPresent()) {
+                transaction.setPerson(person.get());
+            } else {
+                personRepository.save(transaction.getPerson());
+            }
+        });
+
+        transactionRepository.saveAll(transactions);
+    }
+
+    @RabbitListener(queues = "transaction.update")
+    public void consumeUpdateTransaction(List<Transaction> transactions) {
+        transactions.forEach(transaction -> {
+            var updateStatus = transactionRepository.findById(transaction.getId());
+            updateStatus.ifPresent(existingTransaction -> {
+                existingTransaction.setStatus(transaction.getStatus());
+                transactionRepository.save(existingTransaction);
+            });
+        });
+    }
 }
