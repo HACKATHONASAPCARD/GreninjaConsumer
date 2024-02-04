@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -27,7 +28,9 @@ public class Transaction {
 	
 	private LocalDateTime transactionDate; 
 	
-	private char status = 'P';
+	
+	@Column(nullable = false)
+	private char status;
 
 	@OneToMany(mappedBy="transaction")
 	private List<Installment> installments;
