@@ -6,6 +6,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @ComponentScan("com.hackathon.repository")
 @SpringBootApplication
+@ComponentScan("com.hackathon.repository") 
 public class AsapcardConsumerApplication {
 
 	public static void main(String[] args) {
