@@ -54,7 +54,7 @@ Clone do repositorio, executar projeto na sua ide
 
 - [Natália Oliveira](https://github.com/nataliabpo/)
 
-- [Tais Arantes]([https://github.com/taisarantes/)
+- [Tais Arantes](https://github.com/taisarantes/)
 
 
 
