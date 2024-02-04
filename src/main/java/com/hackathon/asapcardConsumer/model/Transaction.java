@@ -82,6 +82,11 @@ public class Transaction {
 	public void setInstallments(List<Installment> installments) {
 		this.installments = installments;
 	}
+
+	public void add(Transaction transaction) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 }
